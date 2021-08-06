@@ -1,4 +1,4 @@
-const app = require('./app')
+const app = require('./src/app')
 
 exports.handler = async (event, context) => {
   console.log(`EVENT: ${JSON.stringify(event)}`)
