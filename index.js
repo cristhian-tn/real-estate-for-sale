@@ -1,19 +1,20 @@
 const app = require('./src/app')
+const { logger } = require('./src/logger')
 
 exports.handler = async (event, context) => {
-  console.log(`EVENT: ${JSON.stringify(event)}`)
+  logger.info(`EVENT: ${JSON.stringify(event)}`)
   try {
     const resp = app.handleEvent(event, context)
     return {
-        success: true,
-        data: resp
+      success: true,
+      data: resp
     }
-  } catch(e) {
+  } catch (e) {
     return {
-        success: false,
-        error: {
-            message: e.message || e
-        }
+      success: false,
+      error: {
+        message: e.message || e
+      }
     }
   }
 }
