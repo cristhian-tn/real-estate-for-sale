@@ -1,30 +1,27 @@
 const app = require("./app");
-const { logger } = require("./logger");
 
 describe("App - handleEvent", () => {
   it("should throw if no real address is provided", async () => {
     expect.assertions(1);
-    await expect(app.handleEvent()).rejects.toHaveProperty(
+    await expect(app.handleEvent({})).rejects.toHaveProperty(
       "message",
-      "'address' parameter is required and should be a real address"
+      "'data' parameter should be an array"
     );
   });
-  it("should find my address as a possible real estate for sale", async () => {
+  it("should find my addresses as possible real estates for sale", async () => {
     const event = {
-      address: "1781 County Road 3300, Kempner, TX 76539",
+      data: [{
+        address: "1781 County Road 3300, Kempner, TX 76539",
+        opportunity: {}
+      }, {
+        address: "1781 County Road 3300, Kempner, TX 76539",
+        opportunity: {}
+      }]
     };
 
     const data = await app.handleEvent(event);
-    expect(data).toBe(true);
-    // for (let i = 0; i < 7000; i++) {
-    //   try {
-    //     const data = await app.handleEvent(event);
-    //     expect(data).toBe(true);
-    //     logger.info('Found. ', { attempt: i });
-
-    //   } catch (error) {
-    //     logger.error(error, { attempt: i });
-    //   }
-    // }
+    expect(data.data[0].isForSale).toBe(true);
+    expect(data.data[1].isForSale).toBe(true);
+    expect(data.data[1].opportunity).toEqual({});
   }, 3600000);
 });
